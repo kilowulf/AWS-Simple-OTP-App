@@ -28,6 +28,71 @@
   color: #61dafb;
 }
 
+/* OTP code text */
+
+.otp-code {
+  font-size: 2em; /* Makes the text larger */
+  font-weight: bold; /* Makes the text bold */
+  color: #28527a; /* A distinct color */
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f4f9f9;
+}
+
+/* Message warning on email verifications*/
+
+.message-success {
+  color: green;
+}
+
+.message-error {
+  color: red;
+}
+
+.message {
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+}
+
+.message-hide {
+  opacity: 0;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-group-text {
+  background-color: #f8f9fa; /* Light grey background */
+  border: 1px solid #ced4da; /* Matching bootstrap's default input border */
+  padding: 0.375rem 0.75rem; /* Standard padding */
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Keeps text from overflowing */
+  text-overflow: ellipsis; /* Adds an ellipsis to overflowing text */
+}
+
+.form-control {
+  flex-grow: 1; /* Allows the input to grow to fill space */
+  margin-right: 0.5rem; /* Adds space between the input and the text */
+}
+
+/*Circle timer in otphandling component*/
+
+/* Add these styles to App.css or a relevant stylesheet */
+.canvas-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+canvas {
+  margin-top: 20px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
