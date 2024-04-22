@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext} from "react";
+import React, { useState, useEffect, useRef, useContext, useCallback} from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import OTPContext from './OTPContext';
@@ -50,7 +50,7 @@ function OTPHandling() {
         draw();
     }, [timer]);
 
-const renewOTP = () => {
+const renewOTP = useCallback(() => {
     sendOTP(email).then(newOtp => {
       setOtp(newOtp);  // Set new OTP received from the backend
       setTimer(120);   // Reset the timer
@@ -58,7 +58,7 @@ const renewOTP = () => {
       console.error("Failed to renew OTP: ", error.message);
       setMessage("Failed to renew OTP: " + error.message);
     });
-  };
+  },[]);
 
 
 
@@ -85,15 +85,16 @@ const renewOTP = () => {
   const verifyOTP = () => {  
     setIsVerifying(true);
     axios
-      .get(`https://qlagjo8waj.execute-api.us-east-1.amazonaws.com/dev/verify_otp?email_address=${email}&otp=${otpV}`)
+      .get(`https://qlagjo8waj.execute-api.us-east-1.amazonaws.com/dev/verify_otp?email_address=${email}&otp=${inputOtp}`)
       .then(response => {
+        console.log("verify otp:", inputOtp, response)
         console.log(response.data);
         setMessage(response.data.message); // Assuming verification result is returned
         setIsVerifying(false);
         setShowMessage(true); // Show message
         setTimeout(() => {
-        setShowMessage(false); // Hide message after 10 seconds
-        }, 10000);
+        setShowMessage(false); // Hide message after 5 seconds
+        }, 5000);
       })
       .catch(error => {
         setMessage("Error verifying OTP. " + error.message);
@@ -101,40 +102,34 @@ const renewOTP = () => {
         setIsVerifying(false);
         setShowMessage(true); // Show message
         setTimeout(() => {
-        setShowMessage(false); // Hide message after 10 seconds
-        }, 10000);
+        setShowMessage(false); // Hide message after 5 seconds
+        }, 5000);
       });
   
 };
 
   return (
     <div className="form-control text-center">
-      <h2 className="text-center">OTP Verification</h2>
-      <div className=" form-control text-center ">
-        <div className="text-center">
-            <canvas ref={canvasRef}></canvas>            
-        </div>
-    </div>
-      <p className="otp-code">
-       {otpV} 
-      </p>    
-      
+      <h2>OTP Verification</h2>
+      <div className="text-center">
+        <canvas ref={canvasRef}></canvas>
+      </div>
+      <p className="otp-code">{otpV}</p>
       <div className="input-group mb-3">
         <input
           type="text"
-          className="form-control my-2 text-center"
+          className="text-center"
           value={inputOtp}
           onChange={e => setInputOtp(e.target.value)}
-          placeholder="Enter OTP"          
+          placeholder="Enter OTP"
         />
-        {showMessage && (
-          <span className="input-group-text" style={{ width: '30%', backgroundColor: showMessage ? (message.includes("Time Over") ? "#f8d7da" : "#d4edda") : "#fff" }}>
-            {message}
-          </span>
-        )}
       </div>
-      <button className="btn btn-primary center" onClick={verifyOTP} disabled={isVerifying}>Verify OTP</button>
-      
+      {showMessage && (
+        <div className="alert" style={{ backgroundColor: message.includes("Wrong OTP") ? "#f8d7da" : "#d4edda" }}>
+          {message}
+        </div>
+      )}
+      <button className="btn btn-primary" onClick={verifyOTP} disabled={isVerifying}>Verify OTP</button>
     </div>
    
   );

@@ -13,6 +13,7 @@ function EmailVerification() {
         `https://qlagjo8waj.execute-api.us-east-1.amazonaws.com/dev/send_otp?email_address=${email}`
       )
       .then(response => {
+        console.log(response.data);
         console.log(response.data.otp);
         const otpValue = response.data.otp;
         navigate("/otp", { state: { email, otpValue } }); // Navigate with email state

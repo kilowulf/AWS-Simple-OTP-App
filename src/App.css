@@ -60,8 +60,8 @@
 
 .input-group {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 }
 
 .input-group-text {
@@ -74,8 +74,11 @@
 }
 
 .form-control {
-  flex-grow: 1; /* Allows the input to grow to fill space */
-  margin-right: 0.5rem; /* Adds space between the input and the text */
+  flex-grow: 1;
+  margin-right: 0.5rem;
+  padding: 10px;
+  border: 2px solid #ced4da;
+  border-radius: 5px;
 }
 
 /*Circle timer in otphandling component*/
